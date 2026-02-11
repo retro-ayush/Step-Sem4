@@ -1,6 +1,6 @@
 /**
  *
- * MAIN CLASS - UseCase1PalindromeCheckerApp
+ * MAIN CLASS - PalindromeCheckerApp
  *
  * Use Case 1: Application Entry & Welcome Message
  *
