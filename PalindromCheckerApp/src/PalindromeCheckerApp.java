@@ -21,7 +21,7 @@
  * @author Developer
  * @version 1.0
  */
-import java.util.LinkedList;
+
 public class PalindromeCheckerApp {
     /**
      * Application entry point.
@@ -31,25 +31,29 @@ public class PalindromeCheckerApp {
      *
      * @param args Command-line arguments
      */
+    public static boolean isPalindrome(String str, int start, int end) {
+
+        // Base Condition: If pointers cross or meet
+        if (start >= end) {
+            return true;
+        }
+
+        // If characters don't match
+        if (str.charAt(start) != str.charAt(end)) {
+            return false;
+        }
+
+        // Recursive Call
+        return isPalindrome(str, start + 1, end - 1);
+    }
+
     public static void main(String[] args) {
+
         String input = "level";
 
-        LinkedList<Character> list = new LinkedList<>();
-
-        for (char c : input.toCharArray()) {
-            list.add(c);
-        }
-
-        boolean isPalindrome = true;
-
-        while (list.size() > 1) {
-            if (!list.removeFirst().equals(list.removeLast())) {
-                isPalindrome = false;
-                break;
-            }
-        }
+        boolean result = isPalindrome(input, 0, input.length() - 1);
 
         System.out.println("Input : " + input);
-        System.out.println("Is Palindrome? : " + isPalindrome);
+        System.out.println("Is Palindrome? : " + result);
     }
 }
