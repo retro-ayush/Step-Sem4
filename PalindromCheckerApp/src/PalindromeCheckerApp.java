@@ -31,27 +31,33 @@ public class PalindromeCheckerApp {
      *
      * @param args Command-line arguments
      */
-    public static boolean isPalindrome(String str, int start, int end) {
+     public static boolean isPalindrome(String input) {
 
-        // Base Condition: If pointers cross or meet
-        if (start >= end) {
-            return true;
+        // Step 1: Normalize string
+        String normalized = input
+                .toLowerCase()
+                .replaceAll("\\s+", "");   // Remove spaces using regex
+
+        int start = 0;
+        int end = normalized.length() - 1;
+
+        // Step 2: Apply palindrome logic
+        while (start < end) {
+            if (normalized.charAt(start) != normalized.charAt(end)) {
+                return false;
+            }
+            start++;
+            end--;
         }
 
-        // If characters don't match
-        if (str.charAt(start) != str.charAt(end)) {
-            return false;
-        }
-
-        // Recursive Call
-        return isPalindrome(str, start + 1, end - 1);
+        return true;
     }
 
     public static void main(String[] args) {
 
-        String input = "level";
+        String input = "Never Odd Or Even";
 
-        boolean result = isPalindrome(input, 0, input.length() - 1);
+        boolean result = isPalindrome(input);
 
         System.out.println("Input : " + input);
         System.out.println("Is Palindrome? : " + result);
