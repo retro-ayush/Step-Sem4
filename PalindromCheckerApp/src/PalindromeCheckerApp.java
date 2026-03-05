@@ -56,9 +56,6 @@ public class PalindromeCheckerApp {
         scanner.close();
     }
 
-    /**
-     * Palindrome checking logic (Two-pointer method)
-     */
     public static boolean checkPalindrome(String input) {
 
         int start = 0;
