@@ -22,44 +22,63 @@
  * @version 1.0
  */
 
+import java.util.Scanner;
+
 public class PalindromeCheckerApp {
-    /**
-     * Application entry point.
-     *
-     * This is the first method executed by the JVM
-     * when the program starts.
-     *
+     /**
+     * Application entry point for UC11.
      * @param args Command-line arguments
      */
-     public static boolean isPalindrome(String input) {
+    public static void main(String[] args) {
 
-        // Step 1: Normalize string
-        String normalized = input
-                .toLowerCase()
-                .replaceAll("\\s+", "");   // Remove spaces using regex
+        Scanner scanner = new Scanner(System.in);
 
+        System.out.print("Enter a string: ");
+        String input = scanner.nextLine();
+
+        // Create service object
+        PalindromeService service = new PalindromeService();
+
+        // Check palindrome
+        boolean result = service.checkPalindrome(input);
+
+        if (result) {
+            System.out.println("The given string is a Palindrome.");
+        } else {
+            System.out.println("The given string is NOT a Palindrome.");
+        }
+
+        scanner.close();
+    }
+}
+/**
+ * Service class that contains palindrome logic.
+ */
+class PalindromeService {
+
+    /**
+     * Checks whether the input string is a palindrome.
+     *
+     * @param input Input string
+     * @return true if palindrome, false otherwise
+     */
+    public boolean checkPalindrome(String input) {
+
+        // Initialize pointers
         int start = 0;
-        int end = normalized.length() - 1;
+        int end = input.length() - 1;
 
-        // Step 2: Apply palindrome logic
+        // Compare characters moving inward
         while (start < end) {
-            if (normalized.charAt(start) != normalized.charAt(end)) {
+
+            if (input.charAt(start) != input.charAt(end)) {
                 return false;
             }
+
             start++;
             end--;
         }
 
         return true;
-    }
-
-    public static void main(String[] args) {
-
-        String input = "Never Odd Or Even";
-
-        boolean result = isPalindrome(input);
-
-        System.out.println("Input : " + input);
-        System.out.println("Is Palindrome? : " + result);
     }
 }
