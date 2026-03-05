@@ -21,69 +21,57 @@
  * @author Developer
  * @version 1.0
  */
-
 import java.util.Scanner;
-import java.util.Stack;
 
 public class PalindromeCheckerApp {
-     /**
-     * Application entry point for UC11.
-     * @param args Command-line arguments
+
+    /**
+     * Application entry point for UC13
      */
- public static void main(String[] args) {
+    public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Enter a string: ");
+        System.out.print("Input : ");
         String input = scanner.nextLine();
 
-        // Inject strategy at runtime
-        PalindromeStrategy strategy = new StackStrategy();
+        // Convert to lowercase for case-insensitive comparison
+        input = input.toLowerCase();
 
-        // Execute algorithm
-        boolean result = strategy.checkPalindrome(input);
+        // Start time
+        long startTime = System.nanoTime();
 
-        if (result) {
-            System.out.println("The given string is a Palindrome.");
-        } else {
-            System.out.println("The given string is NOT a Palindrome.");
-        }
+        // Call palindrome checking method
+        boolean result = checkPalindrome(input);
+
+        // End time
+        long endTime = System.nanoTime();
+
+        // Calculate execution time
+        long duration = endTime - startTime;
+
+        System.out.println("Is Palindrome? : " + result);
+        System.out.println("Execution Time : " + duration + " ns");
 
         scanner.close();
     }
-}
-/**
- * INTERFACE - PalindromeStrategy
- *
- * Defines a contract for palindrome checking algorithms.
- */
-interface PalindromeStrategy {
 
-    boolean checkPalindrome(String input);
-}
+    /**
+     * Palindrome checking logic (Two-pointer method)
+     */
+    public static boolean checkPalindrome(String input) {
 
-/**
- * CLASS - StackStrategy
- *
- * Concrete implementation using Stack.
- */
-class StackStrategy implements PalindromeStrategy {
+        int start = 0;
+        int end = input.length() - 1;
 
-    @Override
-    public boolean checkPalindrome(String input) {
+        while (start < end) {
 
-        Stack<Character> stack = new Stack<>();
-
-        // Push all characters to stack
-        for (char c : input.toCharArray()) {
-            stack.push(c);
-        }
-
-        // Compare characters with stack pop
-        for (char c : input.toCharArray()) {
-            if (c != stack.pop()) {
+            if (input.charAt(start) != input.charAt(end)) {
                 return false;
             }
+
+            start++;
+            end--;
         }
 
         return true;
