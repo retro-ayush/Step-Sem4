@@ -13,105 +13,84 @@
  * @author Developer
  * @version 2.1
  */
+import java.util.HashMap;
+import java.util.Map;
 
-public class HotelBookingApp {
+
+class RoomInventory {
+
+    /**
+     * Stores available room count for each room type.
+     * Key -> Room type name
+     * Value -> Available room count
+     */
+    private Map<String, Integer> roomAvailability;
+
+    /**
+     * Constructor initializes the inventory
+     * with default availability values.
+     */
+    public RoomInventory() {
+        roomAvailability = new HashMap<>();
+        initializeInventory();
+    }
+
+    /**
+     * Initializes room availability data.
+     * This method centralizes inventory setup.
+     */
+    private void initializeInventory() {
+        roomAvailability.put("Single", 10);
+        roomAvailability.put("Double", 5);
+        roomAvailability.put("Suite", 2);
+    }
+
+    /**
+     * Returns the current availability map.
+     *
+     * @return map of room type to available count
+     */
+    public Map<String, Integer> getRoomAvailability() {
+        return roomAvailability;
+    }
+
+    /**
+     * Updates availability for a specific room type.
+     *
+     * @param roomType the room type to update
+     * @param count new availability count
+     */
+    public void updateAvailability(String roomType, int count) {
+        roomAvailability.put(roomType, count);
+    }
+}
+
+/**
+ * MAIN CLASS - UseCase3InventorySetup
+ *
+ * Use Case 3: Centralized Room Inventory Management
+ *
+ * Description:
+ * Demonstrates centralized inventory usage.
+ *
+ * @version 3.1
+ */
+public class UseCase3InventorySetup {
 
     public static void main(String[] args) {
 
-        // Static availability variables
-        int singleRoomAvailable = 10;
-        int doubleRoomAvailable = 5;
-        int suiteRoomAvailable = 2;
+        // Create centralized inventory
+        RoomInventory inventory = new RoomInventory();
 
-        // Creating room objects (Polymorphism)
-        Room single = new SingleRoom();
-        Room doubleRoom = new DoubleRoom();
-        Room suite = new SuiteRoom();
+        // Display initial availability
+        System.out.println("Initial Room Availability:");
+        System.out.println(inventory.getRoomAvailability());
 
-        // Display room details
-        System.out.println("Welcome to Book My Stay - Room Availability\n");
+        // Update availability
+        inventory.updateAvailability("Single", 8);
 
-        single.displayRoomDetails();
-        System.out.println("Available Rooms: " + singleRoomAvailable + "\n");
-
-        doubleRoom.displayRoomDetails();
-        System.out.println("Available Rooms: " + doubleRoomAvailable + "\n");
-
-        suite.displayRoomDetails();
-        System.out.println("Available Rooms: " + suiteRoomAvailable + "\n");
-    }
-}
-
-/**
- * ABSTRACT CLASS - Room
- * Represents the base structure for all room types.
- */
-abstract class Room {
-
-    protected int beds;
-    protected double size;
-    protected double price;
-
-    // Abstract method
-    public abstract void displayRoomDetails();
-}
-
-/**
- * CLASS - SingleRoom
- */
-class SingleRoom extends Room {
-
-    public SingleRoom() {
-        beds = 1;
-        size = 200;
-        price = 1000;
-    }
-
-    @Override
-    public void displayRoomDetails() {
-        System.out.println("Room Type: Single Room");
-        System.out.println("Beds: " + beds);
-        System.out.println("Size: " + size + " sq ft");
-        System.out.println("Price per night: ₹" + price);
-    }
-}
-
-/**
- * CLASS - DoubleRoom
- */
-class DoubleRoom extends Room {
-
-    public DoubleRoom() {
-        beds = 2;
-        size = 350;
-        price = 1800;
-    }
-
-    @Override
-    public void displayRoomDetails() {
-        System.out.println("Room Type: Double Room");
-        System.out.println("Beds: " + beds);
-        System.out.println("Size: " + size + " sq ft");
-        System.out.println("Price per night: ₹" + price);
-    }
-}
-
-/**
- * CLASS - SuiteRoom
- */
-class SuiteRoom extends Room {
-
-    public SuiteRoom() {
-        beds = 3;
-        size = 600;
-        price = 3500;
-    }
-
-    @Override
-    public void displayRoomDetails() {
-        System.out.println("Room Type: Suite Room");
-        System.out.println("Beds: " + beds);
-        System.out.println("Size: " + size + " sq ft");
-        System.out.println("Price per night: ₹" + price);
+        // Display updated availability
+        System.out.println("\nUpdated Room Availability:");
+        System.out.println(inventory.getRoomAvailability());
     }
 }
