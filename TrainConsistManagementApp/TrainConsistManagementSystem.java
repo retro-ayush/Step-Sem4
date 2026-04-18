@@ -4,61 +4,75 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TrainConsistManagementSystem {
 
-    static void sortBogieNames(String[] arr) {
-        Arrays.sort(arr);
+    static boolean binarySearch(String[] arr, String key) {
+        int low = 0;
+        int high = arr.length - 1;
+
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            int cmp = key.compareTo(arr[mid]);
+
+            if (cmp == 0) {
+                return true;
+            } else if (cmp > 0) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+        return false;
     }
 
     public static void main(String[] args) {
 
         System.out.println("========================================");
-        System.out.println(" UC17 - Sort Bogie Names ");
+        System.out.println(" UC19 - Binary Search for Bogie ID ");
         System.out.println("========================================\n");
 
-        String[] bogieNames = {"Sleeper", "AC Chair", "First Class", "General", "Luxury"};
+        String[] bogieIDs = {"BG101","BG205","BG309","BG412","BG550"};
+        String searchKey = "BG309";
 
-        System.out.println("Before Sorting:");
-        System.out.println(Arrays.toString(bogieNames));
+        System.out.println("Sorted Bogie IDs: " + Arrays.toString(bogieIDs));
+        System.out.println("Searching for: " + searchKey);
 
-        sortBogieNames(bogieNames);
+        boolean found = binarySearch(bogieIDs, searchKey);
 
-        System.out.println("\nAfter Sorting:");
-        System.out.println(Arrays.toString(bogieNames));
+        if (found) {
+            System.out.println("Bogie found in the train.");
+        } else {
+            System.out.println("Bogie not found.");
+        }
 
-        System.out.println("\nUC17 execution completed...");
+        System.out.println("\nUC19 execution completed...");
     }
 
     @Test
-    void testSort_BasicAlphabeticalSorting() {
-        String[] arr = {"Sleeper","AC Chair","First Class","General","Luxury"};
-        sortBogieNames(arr);
-        assertArrayEquals(new String[]{"AC Chair","First Class","General","Luxury","Sleeper"}, arr);
+    void testSearch_BogieFound() {
+        String[] arr = {"BG101","BG205","BG309","BG412","BG550"};
+        assertTrue(binarySearch(arr, "BG309"));
     }
 
     @Test
-    void testSort_UnsortedInput() {
-        String[] arr = {"Luxury","General","Sleeper","AC Chair"};
-        sortBogieNames(arr);
-        assertArrayEquals(new String[]{"AC Chair","General","Luxury","Sleeper"}, arr);
+    void testSearch_BogieNotFound() {
+        String[] arr = {"BG101","BG205","BG309","BG412","BG550"};
+        assertFalse(binarySearch(arr, "BG999"));
     }
 
     @Test
-    void testSort_AlreadySortedArray() {
-        String[] arr = {"AC Chair","First Class","General"};
-        sortBogieNames(arr);
-        assertArrayEquals(new String[]{"AC Chair","First Class","General"}, arr);
+    void testSearch_FirstElementMatch() {
+        String[] arr = {"BG101","BG205","BG309"};
+        assertTrue(binarySearch(arr, "BG101"));
     }
 
     @Test
-    void testSort_DuplicateBogieNames() {
-        String[] arr = {"Sleeper","AC Chair","Sleeper","General"};
-        sortBogieNames(arr);
-        assertArrayEquals(new String[]{"AC Chair","General","Sleeper","Sleeper"}, arr);
+    void testSearch_LastElementMatch() {
+        String[] arr = {"BG101","BG205","BG550"};
+        assertTrue(binarySearch(arr, "BG550"));
     }
 
     @Test
-    void testSort_SingleElementArray() {
-        String[] arr = {"Sleeper"};
-        sortBogieNames(arr);
-        assertArrayEquals(new String[]{"Sleeper"}, arr);
+    void testSearch_SingleElementArray() {
+        String[] arr = {"BG101"};
+        assertTrue(binarySearch(arr, "BG101"));
     }
 }
