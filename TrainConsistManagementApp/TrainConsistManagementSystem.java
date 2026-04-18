@@ -1,17 +1,18 @@
 import java.util.ArrayList;
-import java.util.List;
 
-class Wagon {
+class PassengerBogie {
     private String id;
     private String type;
+    private int capacity;
 
-    public Wagon(String id, String type) {
+    public PassengerBogie(String id, String type, int capacity) {
         this.id = id;
         this.type = type;
+        this.capacity = capacity;
     }
 
     public String toString() {
-        return "Wagon ID: " + id + ", Type: " + type;
+        return "Bogie ID: " + id + ", Type: " + type + ", Capacity: " + capacity;
     }
 }
 
@@ -21,18 +22,17 @@ public class TrainConsistManagementSystem {
         System.out.println("    Train Consist Management App   ");
         System.out.println("==================================");
 
-        List<Wagon> trainConsist = new ArrayList<>();
+        ArrayList<PassengerBogie> passengerBogies = new ArrayList<>();
 
-        trainConsist.add(new Wagon("P001", "Passenger - Sleeper"));
-        trainConsist.add(new Wagon("P002", "Passenger - AC Chair"));
-        trainConsist.add(new Wagon("G001", "Goods - Rectangular"));
-        trainConsist.add(new Wagon("G002", "Goods - Cylindrical"));
+        passengerBogies.add(new PassengerBogie("PB101", "Sleeper", 72));
+        passengerBogies.add(new PassengerBogie("PB102", "AC Chair", 60));
+        passengerBogies.add(new PassengerBogie("PB103", "First Class", 40));
 
-        System.out.println("Train initialized successfully.\n");
+        System.out.println("Passenger bogies added successfully.\n");
 
-        System.out.println("Train Consist Summary:");
-        for (Wagon wagon : trainConsist) {
-            System.out.println(wagon);
+        System.out.println("Passenger Bogie List:");
+        for (PassengerBogie bogie : passengerBogies) {
+            System.out.println(bogie);
         }
     }
 }
