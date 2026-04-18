@@ -1,20 +1,4 @@
-import java.util.ArrayList;
-
-class PassengerBogie {
-    private String id;
-    private String type;
-    private int capacity;
-
-    public PassengerBogie(String id, String type, int capacity) {
-        this.id = id;
-        this.type = type;
-        this.capacity = capacity;
-    }
-
-    public String toString() {
-        return "Bogie ID: " + id + ", Type: " + type + ", Capacity: " + capacity;
-    }
-}
+import java.util.HashSet;
 
 public class TrainConsistManagementSystem {
     public static void main(String[] args) {
@@ -22,17 +6,17 @@ public class TrainConsistManagementSystem {
         System.out.println("    Train Consist Management App   ");
         System.out.println("==================================");
 
-        ArrayList<PassengerBogie> passengerBogies = new ArrayList<>();
+        HashSet<String> bogieIds = new HashSet<>();
 
-        passengerBogies.add(new PassengerBogie("PB101", "Sleeper", 72));
-        passengerBogies.add(new PassengerBogie("PB102", "AC Chair", 60));
-        passengerBogies.add(new PassengerBogie("PB103", "First Class", 40));
+        bogieIds.add("PB101");
+        bogieIds.add("PB102");
+        bogieIds.add("PB103");
+        bogieIds.add("PB101");
+        bogieIds.add("PB104");
 
-        System.out.println("Passenger bogies added successfully.\n");
-
-        System.out.println("Passenger Bogie List:");
-        for (PassengerBogie bogie : passengerBogies) {
-            System.out.println(bogie);
+        System.out.println("Unique Bogie IDs:");
+        for (String id : bogieIds) {
+            System.out.println(id);
         }
     }
 }
