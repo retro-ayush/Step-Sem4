@@ -25,58 +25,56 @@ public class Length {
 
     // ===== CONSTRUCTOR =====
     public Length(double value, LengthUnit unit) {
-        if (unit == null) {
-            throw new IllegalArgumentException("Unit cannot be null");
-        }
-        if (!Double.isFinite(value)) {
-            throw new IllegalArgumentException("Invalid value");
-        }
+        if (unit == null) throw new IllegalArgumentException("Unit cannot be null");
+        if (!Double.isFinite(value)) throw new IllegalArgumentException("Invalid value");
 
         this.value = value;
         this.unit = unit;
     }
 
-    // ===== BASE UNIT CONVERSION (INCHES) =====
-    private double convertToBaseUnit() {
-        return this.value * this.unit.getConversionFactor();
-    }
-
-    // ===== COMPARE =====
-    private boolean compare(Length that) {
-        return Double.compare(this.convertToBaseUnit(),
-                that.convertToBaseUnit()) == 0;
+    // ===== BASE UNIT =====
+    private double toBaseUnit() {
+        return value * unit.getConversionFactor(); // inches
     }
 
     // ===== EQUALS =====
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Length)) return false;
 
-        Length that = (Length) o;
-        return compare(that);
+        Length other = (Length) o;
+        return Double.compare(this.toBaseUnit(), other.toBaseUnit()) == 0;
     }
 
-    // ===== CONVERSION METHOD (CORE UC5) =====
+    // ===== CONVERT =====
     public Length convertTo(LengthUnit targetUnit) {
+        if (targetUnit == null) throw new IllegalArgumentException("Target unit null");
 
-        if (targetUnit == null) {
-            throw new IllegalArgumentException("Target unit cannot be null");
-        }
+        double base = toBaseUnit();
+        double converted = base / targetUnit.getConversionFactor();
 
-        // Step 1: convert to base unit (inches)
-        double baseValue = convertToBaseUnit();
+        converted = Math.round(converted * 100.0) / 100.0;
 
-        // Step 2: convert to target unit
-        double convertedValue = baseValue / targetUnit.getConversionFactor();
-
-        // Optional rounding (2 decimal places)
-        convertedValue = Math.round(convertedValue * 100.0) / 100.0;
-
-        return new Length(convertedValue, targetUnit);
+        return new Length(converted, targetUnit);
     }
 
-    // ===== toString =====
+    // ===== ADD (UC6 CORE) =====
+    public Length add(Length other) {
+        if (other == null) throw new IllegalArgumentException("Other length null");
+
+        // Step 1: convert both to base (inches)
+        double sumBase = this.toBaseUnit() + other.toBaseUnit();
+
+        // Step 2: convert back to THIS unit
+        double result = sumBase / this.unit.getConversionFactor();
+
+        // rounding
+        result = Math.round(result * 100.0) / 100.0;
+
+        return new Length(result, this.unit);
+    }
+
     @Override
     public String toString() {
         return String.format("%.2f %s", value, unit);
