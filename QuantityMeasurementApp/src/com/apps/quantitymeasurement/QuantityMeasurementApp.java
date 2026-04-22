@@ -2,48 +2,54 @@ package com.apps.quantitymeasurement;
 
 public class QuantityMeasurementApp {
 
-    public static boolean demonstrateLengthEquality(Length l1, Length l2) {
-        return l1.equals(l2);
+    // ===== WEIGHT METHODS =====
+
+    public static boolean demonstrateWeightEquality(Weight w1, Weight w2) {
+        return w1.equals(w2);
     }
 
-    public static boolean demonstrateLengthComparison(
-            double v1, LengthUnit u1,
-            double v2, LengthUnit u2) {
+    public static boolean demonstrateWeightComparison(
+            double v1, WeightUnit u1,
+            double v2, WeightUnit u2) {
 
-        return new Length(v1, u1).equals(new Length(v2, u2));
+        return new Weight(v1, u1).equals(new Weight(v2, u2));
     }
 
-    public static Length demonstrateLengthConversion(
-            double value, LengthUnit from, LengthUnit to) {
+    public static Weight demonstrateWeightConversion(
+            double value, WeightUnit from, WeightUnit to) {
 
-        return new Length(value, from).convertTo(to);
+        return new Weight(value, from).convertTo(to);
     }
 
-    public static Length demonstrateLengthConversion(
-            Length length, LengthUnit toUnit) {
+    public static Weight demonstrateWeightConversion(
+            Weight weight, WeightUnit to) {
 
-        return length.convertTo(toUnit);
+        return weight.convertTo(to);
     }
 
-    // UC6
-    public static Length demonstrateLengthAddition(Length l1, Length l2) {
-        return l1.add(l2);
+    public static Weight demonstrateWeightAddition(Weight w1, Weight w2) {
+        return w1.add(w2);
     }
 
-    // UC7
-    public static Length demonstrateLengthAddition(
-            Length l1, Length l2, LengthUnit targetUnit) {
+    public static Weight demonstrateWeightAddition(
+            Weight w1, Weight w2, WeightUnit target) {
 
-        return l1.add(l2, targetUnit);
+        return w1.add(w2, target);
     }
+
+    // ===== MAIN =====
 
     public static void main(String[] args) {
 
-        Length l1 = new Length(1.0, LengthUnit.FEET);
-        Length l2 = new Length(12.0, LengthUnit.INCHES);
+        Weight w1 = new Weight(1, WeightUnit.KILOGRAM);
+        Weight w2 = new Weight(1000, WeightUnit.GRAM);
 
-        System.out.println("Addition (FEET): " + l1.add(l2));
-        System.out.println("Addition (INCHES): " + l1.add(l2, LengthUnit.INCHES));
-        System.out.println("Addition (YARDS): " + l1.add(l2, LengthUnit.YARDS));
+        System.out.println("Equality: " + w1.equals(w2));
+
+        Weight converted = w1.convertTo(WeightUnit.POUND);
+        System.out.println("Converted: " + converted);
+
+        Weight sum = w1.add(w2);
+        System.out.println("Addition: " + sum);
     }
 }
