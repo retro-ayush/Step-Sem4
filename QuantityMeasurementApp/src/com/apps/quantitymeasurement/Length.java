@@ -12,14 +12,14 @@ public class Length {
         YARDS(36.0),
         CENTIMETERS(0.393701);
 
-        private final double conversionFactor;
+        private final double factor;
 
-        LengthUnit(double conversionFactor) {
-            this.conversionFactor = conversionFactor;
+        LengthUnit(double factor) {
+            this.factor = factor;
         }
 
-        public double getConversionFactor() {
-            return conversionFactor;
+        public double getFactor() {
+            return factor;
         }
     }
 
@@ -32,9 +32,42 @@ public class Length {
         this.unit = unit;
     }
 
-    // ===== BASE UNIT =====
-    private double toBaseUnit() {
-        return value * unit.getConversionFactor(); // inches
+    // ===== BASE (INCHES) =====
+    private double toBase() {
+        return value * unit.getFactor();
+    }
+
+    // ===== COMMON HELPER (USED BY UC6 + UC7) =====
+    private Length addAndConvert(Length other, LengthUnit targetUnit) {
+        if (other == null || targetUnit == null)
+            throw new IllegalArgumentException("Invalid input");
+
+        double sumBase = this.toBase() + other.toBase();
+
+        double result = sumBase / targetUnit.getFactor();
+        result = Math.round(result * 100.0) / 100.0;
+
+        return new Length(result, targetUnit);
+    }
+
+    // ===== UC6 =====
+    public Length add(Length other) {
+        return addAndConvert(other, this.unit);
+    }
+
+    // ===== UC7 =====
+    public Length add(Length other, LengthUnit targetUnit) {
+        return addAndConvert(other, targetUnit);
+    }
+
+    // ===== CONVERT =====
+    public Length convertTo(LengthUnit targetUnit) {
+        if (targetUnit == null) throw new IllegalArgumentException();
+
+        double result = toBase() / targetUnit.getFactor();
+        result = Math.round(result * 100.0) / 100.0;
+
+        return new Length(result, targetUnit);
     }
 
     // ===== EQUALS =====
@@ -44,35 +77,7 @@ public class Length {
         if (!(o instanceof Length)) return false;
 
         Length other = (Length) o;
-        return Double.compare(this.toBaseUnit(), other.toBaseUnit()) == 0;
-    }
-
-    // ===== CONVERT =====
-    public Length convertTo(LengthUnit targetUnit) {
-        if (targetUnit == null) throw new IllegalArgumentException("Target unit null");
-
-        double base = toBaseUnit();
-        double converted = base / targetUnit.getConversionFactor();
-
-        converted = Math.round(converted * 100.0) / 100.0;
-
-        return new Length(converted, targetUnit);
-    }
-
-    // ===== ADD (UC6 CORE) =====
-    public Length add(Length other) {
-        if (other == null) throw new IllegalArgumentException("Other length null");
-
-        // Step 1: convert both to base (inches)
-        double sumBase = this.toBaseUnit() + other.toBaseUnit();
-
-        // Step 2: convert back to THIS unit
-        double result = sumBase / this.unit.getConversionFactor();
-
-        // rounding
-        result = Math.round(result * 100.0) / 100.0;
-
-        return new Length(result, this.unit);
+        return Double.compare(this.toBase(), other.toBase()) == 0;
     }
 
     @Override
