@@ -2,41 +2,54 @@ package com.apps.quantitymeasurement;
 
 public class QuantityMeasurementApp {
 
+    // ===== Equality =====
     public static boolean demonstrateLengthEquality(Length l1, Length l2) {
         return l1.equals(l2);
     }
 
-    public static boolean demonstrateLengthComparison(double v1, Length.LengthUnit u1,
-                                                      double v2, Length.LengthUnit u2) {
+    // ===== Comparison using values =====
+    public static boolean demonstrateLengthComparison(
+            double v1, Length.LengthUnit u1,
+            double v2, Length.LengthUnit u2) {
 
         Length l1 = new Length(v1, u1);
         Length l2 = new Length(v2, u2);
 
-        boolean result = l1.equals(l2);
-        System.out.println("Are equal? " + result);
-        return result;
+        return demonstrateLengthEquality(l1, l2);
     }
 
+    // ===== Conversion (method 1) =====
+    public static Length demonstrateLengthConversion(
+            double value,
+            Length.LengthUnit fromUnit,
+            Length.LengthUnit toUnit) {
+
+        Length length = new Length(value, fromUnit);
+        return length.convertTo(toUnit);
+    }
+
+    // ===== Conversion (method 2 – overloaded) =====
+    public static Length demonstrateLengthConversion(
+            Length length,
+            Length.LengthUnit toUnit) {
+
+        return length.convertTo(toUnit);
+    }
+
+    // ===== MAIN =====
     public static void main(String[] args) {
 
-        // Feet vs Inches
-        demonstrateLengthComparison(1.0, Length.LengthUnit.FEET,
-                12.0, Length.LengthUnit.INCHES);
+        // 1 ft → inches
+        System.out.println(demonstrateLengthConversion(
+                1.0, Length.LengthUnit.FEET, Length.LengthUnit.INCHES));
 
-        // Yard vs Inches
-        demonstrateLengthComparison(1.0, Length.LengthUnit.YARDS,
-                36.0, Length.LengthUnit.INCHES);
+        // 2 yards → inches
+        System.out.println(demonstrateLengthConversion(
+                2.0, Length.LengthUnit.YARDS, Length.LengthUnit.INCHES));
 
-        // CM vs Inches
-        demonstrateLengthComparison(1.0, Length.LengthUnit.CENTIMETERS,
-                0.393701, Length.LengthUnit.INCHES);
-
-        // Feet vs Yard
-        demonstrateLengthComparison(3.0, Length.LengthUnit.FEET,
-                1.0, Length.LengthUnit.YARDS);
-
-        // CM vs Feet
-        demonstrateLengthComparison(30.48, Length.LengthUnit.CENTIMETERS,
-                1.0, Length.LengthUnit.FEET);
+        // object conversion
+        Length yard = new Length(2.0, Length.LengthUnit.YARDS);
+        System.out.println(demonstrateLengthConversion(
+                yard, Length.LengthUnit.INCHES));
     }
 }
