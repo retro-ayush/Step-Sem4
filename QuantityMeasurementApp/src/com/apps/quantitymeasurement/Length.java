@@ -5,10 +5,12 @@ public class Length {
     private final double value;
     private final LengthUnit unit;
 
-    // ===== ENUM =====
+    // ===== ENUM (UPDATED) =====
     public enum LengthUnit {
-        FEET(12.0),   // 1 foot = 12 inches
-        INCHES(1.0);  // base unit
+        FEET(12.0),           // 1 ft = 12 in
+        INCHES(1.0),          // base unit
+        YARDS(36.0),          // 1 yard = 36 in
+        CENTIMETERS(0.393701); // 1 cm = 0.393701 in
 
         private final double conversionFactor;
 
@@ -32,30 +34,27 @@ public class Length {
 
     // ===== CONVERT TO BASE UNIT (INCHES) =====
     private double toBaseUnit() {
-        return this.value * this.unit.getConversionFactor();
+        double result = this.value * this.unit.getConversionFactor();
+
+        // rounding to avoid floating precision issues
+        return Math.round(result * 100000.0) / 100000.0;
     }
 
     // ===== COMPARE =====
     public boolean compare(Length other) {
         if (other == null) return false;
+
         return Double.compare(this.toBaseUnit(), other.toBaseUnit()) == 0;
     }
 
     // ===== EQUALS =====
     @Override
     public boolean equals(Object obj) {
-
-        // same reference
         if (this == obj) return true;
-
-        // null check
         if (obj == null) return false;
-
-        // type check
         if (getClass() != obj.getClass()) return false;
 
         Length other = (Length) obj;
-
         return this.compare(other);
     }
 }
